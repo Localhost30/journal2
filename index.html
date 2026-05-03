@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#1a1a2e">
+    <title>Trading Journal</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="images/icon-192.svg">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <h1>📊 Trading Journal</h1>
+            <div class="header-actions">
+                <button id="exportBtn" class="btn-icon" title="Exporter">📥</button>
+                <button id="settingsBtn" class="btn-icon" title="Paramètres">⚙️</button>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav">
+            <button class="nav-btn active" data-tab="trades">Trades</button>
+            <button class="nav-btn" data-tab="analysis">Analyse</button>
+            <button class="nav-btn" data-tab="stats">Stats</button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Trades Tab -->
+            <section id="tradesTab" class="tab-content active">
+                <div class="tab-header">
+                    <h2>Mes Trades</h2>
+                    <button id="addTradeBtn" class="btn-primary">+ Nouveau Trade</button>
+                </div>
+
+                <!-- Filters -->
+                <div class="filters">
+                    <select id="filterStrategy" class="filter-select">
+                        <option value="">Toutes les stratégies</option>
+                    </select>
+                    <select id="filterTimeframe" class="filter-select">
+                        <option value="">Tous les timeframes</option>
+                        <option value="M1">M1</option>
+                        <option value="M5">M5</option>
+                        <option value="M15">M15</option>
+                        <option value="H1">H1</option>
+                        <option value="H4">H4</option>
+                        <option value="D1">D1</option>
+                        <option value="W1">W1</option>
+                    </select>
+                    <select id="filterMonth" class="filter-select">
+                        <option value="">Tous les mois</option>
+                    </select>
+                </div>
+
+                <!-- Trades List -->
+                <div id="tradesList" class="trades-list">
+                    <div class="empty-state">
+                        <p>Aucun trade enregistré</p>
+                        <p>Commencez par ajouter votre premier trade !</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analysis Tab -->
+            <section id="analysisTab" class="tab-content">
+                <div class="tab-header">
+                    <h2>Analyse Mensuelle</h2>
+                    <select id="analysisMonth" class="month-select"></select>
+                </div>
+
+                <div class="analysis-cards">
+                    <div class="card">
+                        <h3>Profit/Perte Total</h3>
+                        <p id="totalPnL" class="value">$0.00</p>
+                    </div>
+                    <div class="card">
+                        <h3>Winrate</h3>
+                        <p id="winrate" class="value">0%</p>
+                    </div>
+                    <div class="card">
+                        <h3>Nombre de Trades</h3>
+                        <p id="totalTrades" class="value">0</p>
+                    </div>
+                    <div class="card">
+                        <h3>R/R Moyen</h3>
+                        <p id="avgRR" class="value">0.00</p>
+                    </div>
+                </div>
+
+                <div class="analysis-section">
+                    <h3>Performance par Stratégie</h3>
+                    <div id="strategyPerformance" class="strategy-list"></div>
+                </div>
+
+                <div class="analysis-section">
+                    <h3>Meilleur Trade</h3>
+                    <div id="bestTrade" class="trade-highlight"></div>
+                </div>
+
+                <div class="analysis-section">
+                    <h3>Pire Trade</h3>
+                    <div id="worstTrade" class="trade-highlight"></div>
+                </div>
+            </section>
+
+            <!-- Stats Tab -->
+            <section id="statsTab" class="tab-content">
+                <div class="tab-header">
+                    <h2>Statistiques Globales</h2>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Capital Total</h3>
+                        <p id="totalCapital" class="value">$0.00</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Trades Gagnants</h3>
+                        <p id="winningTrades" class="value">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Trades Perdants</h3>
+                        <p id="losingTrades" class="value">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Gain Moyen</h3>
+                        <p id="avgWin" class="value">$0.00</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Perte Moyenne</h3>
+                        <p id="avgLoss" class="value">$0.00</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Plus Longue Série Gagnante</h3>
+                        <p id="longestWinStreak" class="value">0</p>
+                    </div>
+                </div>
+
+                <div class="chart-section">
+                    <h3>Évolution du Capital</h3>
+                    <canvas id="capitalChart"></canvas>
+                </div>
+
+                <div class="chart-section">
+                    <h3>Distribution Gains/Pertes</h3>
+                    <canvas id="pnlChart"></canvas>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Add Trade Modal -->
+    <div id="addTradeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Nouveau Trade</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <form id="tradeForm">
+                <div class="form-group">
+                    <label>Paire/Actif *</label>
+                    <input type="text" id="pair" required placeholder="ex: EUR/USD, BTC/USDT">
+                </div>
+                <div class="form-group">
+                    <label>Direction *</label>
+                    <select id="direction" required>
+                        <option value="long">Long (Achat)</option>
+                        <option value="short">Short (Vente)</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Prix Entrée *</label>
+                        <input type="number" id="entryPrice" required step="0.0001" placeholder="0.0000">
+                    </div>
+                    <div class="form-group">
+                        <label>Prix Sortie *</label>
+                        <input type="number" id="exitPrice" required step="0.0001" placeholder="0.0000">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Taille Position *</label>
+                        <input type="number" id="positionSize" required step="0.01" placeholder="0.00">
+                    </div>
+                    <div class="form-group">
+                        <label>Unité</label>
+                        <select id="positionUnit">
+                            <option value="units">Unités</option>
+                            <option value="lots">Lots</option>
+                            <option value="usd">USD</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Gain/Perte ($)</label>
+                        <input type="number" id="pnl" step="0.01" placeholder="0.00">
+                    </div>
+                    <div class="form-group">
+                        <label>Gain/Perte (%)</label>
+                        <input type="number" id="pnlPercent" step="0.01" placeholder="0.00">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date Entrée *</label>
+                        <input type="datetime-local" id="entryDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Date Sortie *</label>
+                        <input type="datetime-local" id="exitDate" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Stratégie *</label>
+                    <input type="text" id="strategy" required placeholder="ex: Breakout, Trend Following">
+                </div>
+                <div class="form-group">
+                    <label>Timeframe</label>
+                    <select id="timeframe">
+                        <option value="M1">M1 (1 minute)</option>
+                        <option value="M5">M5 (5 minutes)</option>
+                        <option value="M15">M15 (15 minutes)</option>
+                        <option value="H1">H1 (1 heure)</option>
+                        <option value="H4">H4 (4 heures)</option>
+                        <option value="D1">D1 (Daily)</option>
+                        <option value="W1">W1 (Weekly)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Notes</label>
+                    <textarea id="notes" rows="3" placeholder="Ce que vous avez ressenti, erreurs, leçons apprises..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary cancel-btn">Annuler</button>
+                    <button type="submit" class="btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- View Trade Modal -->
+    <div id="viewTradeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Détails du Trade</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div id="tradeDetails" class="trade-details"></div>
+            <div class="form-actions">
+                <button id="editTradeBtn" class="btn-secondary">Modifier</button>
+                <button id="deleteTradeBtn" class="btn-danger">Supprimer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Paramètres</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="settings-content">
+                <div class="form-group">
+                    <label>Capital Initial ($)</label>
+                    <input type="number" id="initialCapital" step="0.01" value="10000">
+                </div>
+                <div class="form-group">
+                    <label>Devise</label>
+                    <select id="currency">
+                        <option value="USD">USD ($)</option>
+                        <option value="EUR">EUR (€)</option>
+                        <option value="GBP">GBP (£)</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button id="clearDataBtn" class="btn-danger">Supprimer toutes les données</button>
+                    <button id="saveSettingsBtn" class="btn-primary">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+    </script>
+</body>
+</html>
