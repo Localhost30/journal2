@@ -1,0 +1,14 @@
+{
+  "name": "trading-journal-pro",
+  "version": "1.0.0",
+  "description": "Trading Journal Pro — Application professionnelle de suivi de trades",
+  "scripts": {
+    "start": "cd backend && node server.js",
+    "dev": "cd backend && npx nodemon server.js",
+    "install:backend": "cd backend && npm install",
+    "setup": "npm run install:backend"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

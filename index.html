@@ -1,300 +1,519 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#1a1a2e">
-    <title>Trading Journal</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="images/icon-192.svg">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0a0e17">
+  <title>Trading Journal Pro</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="images/icon-192.svg">
 </head>
 <body>
-    <div class="app-container">
-        <!-- Header -->
-        <header class="header">
-            <h1>📊 Trading Journal</h1>
-            <div class="header-actions">
-                <button id="exportBtn" class="btn-icon" title="Exporter">📥</button>
-                <button id="settingsBtn" class="btn-icon" title="Paramètres">⚙️</button>
-            </div>
-        </header>
 
-        <!-- Navigation -->
-        <nav class="nav">
-            <button class="nav-btn active" data-tab="trades">Trades</button>
-            <button class="nav-btn" data-tab="analysis">Analyse</button>
-            <button class="nav-btn" data-tab="stats">Stats</button>
-        </nav>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Trades Tab -->
-            <section id="tradesTab" class="tab-content active">
-                <div class="tab-header">
-                    <h2>Mes Trades</h2>
-                    <button id="addTradeBtn" class="btn-primary">+ Nouveau Trade</button>
-                </div>
-
-                <!-- Filters -->
-                <div class="filters">
-                    <select id="filterStrategy" class="filter-select">
-                        <option value="">Toutes les stratégies</option>
-                    </select>
-                    <select id="filterTimeframe" class="filter-select">
-                        <option value="">Tous les timeframes</option>
-                        <option value="M1">M1</option>
-                        <option value="M5">M5</option>
-                        <option value="M15">M15</option>
-                        <option value="H1">H1</option>
-                        <option value="H4">H4</option>
-                        <option value="D1">D1</option>
-                        <option value="W1">W1</option>
-                    </select>
-                    <select id="filterMonth" class="filter-select">
-                        <option value="">Tous les mois</option>
-                    </select>
-                </div>
-
-                <!-- Trades List -->
-                <div id="tradesList" class="trades-list">
-                    <div class="empty-state">
-                        <p>Aucun trade enregistré</p>
-                        <p>Commencez par ajouter votre premier trade !</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Analysis Tab -->
-            <section id="analysisTab" class="tab-content">
-                <div class="tab-header">
-                    <h2>Analyse Mensuelle</h2>
-                    <select id="analysisMonth" class="month-select"></select>
-                </div>
-
-                <div class="analysis-cards">
-                    <div class="card">
-                        <h3>Profit/Perte Total</h3>
-                        <p id="totalPnL" class="value">$0.00</p>
-                    </div>
-                    <div class="card">
-                        <h3>Winrate</h3>
-                        <p id="winrate" class="value">0%</p>
-                    </div>
-                    <div class="card">
-                        <h3>Nombre de Trades</h3>
-                        <p id="totalTrades" class="value">0</p>
-                    </div>
-                    <div class="card">
-                        <h3>R/R Moyen</h3>
-                        <p id="avgRR" class="value">0.00</p>
-                    </div>
-                </div>
-
-                <div class="analysis-section">
-                    <h3>Performance par Stratégie</h3>
-                    <div id="strategyPerformance" class="strategy-list"></div>
-                </div>
-
-                <div class="analysis-section">
-                    <h3>Meilleur Trade</h3>
-                    <div id="bestTrade" class="trade-highlight"></div>
-                </div>
-
-                <div class="analysis-section">
-                    <h3>Pire Trade</h3>
-                    <div id="worstTrade" class="trade-highlight"></div>
-                </div>
-            </section>
-
-            <!-- Stats Tab -->
-            <section id="statsTab" class="tab-content">
-                <div class="tab-header">
-                    <h2>Statistiques Globales</h2>
-                </div>
-
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <h3>Capital Total</h3>
-                        <p id="totalCapital" class="value">$0.00</p>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Trades Gagnants</h3>
-                        <p id="winningTrades" class="value">0</p>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Trades Perdants</h3>
-                        <p id="losingTrades" class="value">0</p>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Gain Moyen</h3>
-                        <p id="avgWin" class="value">$0.00</p>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Perte Moyenne</h3>
-                        <p id="avgLoss" class="value">$0.00</p>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Plus Longue Série Gagnante</h3>
-                        <p id="longestWinStreak" class="value">0</p>
-                    </div>
-                </div>
-
-                <div class="chart-section">
-                    <h3>Évolution du Capital</h3>
-                    <canvas id="capitalChart"></canvas>
-                </div>
-
-                <div class="chart-section">
-                    <h3>Distribution Gains/Pertes</h3>
-                    <canvas id="pnlChart"></canvas>
-                </div>
-            </section>
-        </main>
-    </div>
-
-    <!-- Add Trade Modal -->
-    <div id="addTradeModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Nouveau Trade</h2>
-                <button class="close-btn">&times;</button>
-            </div>
-            <form id="tradeForm">
-                <div class="form-group">
-                    <label>Paire/Actif *</label>
-                    <input type="text" id="pair" required placeholder="ex: EUR/USD, BTC/USDT">
-                </div>
-                <div class="form-group">
-                    <label>Direction *</label>
-                    <select id="direction" required>
-                        <option value="long">Long (Achat)</option>
-                        <option value="short">Short (Vente)</option>
-                    </select>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Prix Entrée *</label>
-                        <input type="number" id="entryPrice" required step="0.0001" placeholder="0.0000">
-                    </div>
-                    <div class="form-group">
-                        <label>Prix Sortie *</label>
-                        <input type="number" id="exitPrice" required step="0.0001" placeholder="0.0000">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Taille Position *</label>
-                        <input type="number" id="positionSize" required step="0.01" placeholder="0.00">
-                    </div>
-                    <div class="form-group">
-                        <label>Unité</label>
-                        <select id="positionUnit">
-                            <option value="units">Unités</option>
-                            <option value="lots">Lots</option>
-                            <option value="usd">USD</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Gain/Perte ($)</label>
-                        <input type="number" id="pnl" step="0.01" placeholder="0.00">
-                    </div>
-                    <div class="form-group">
-                        <label>Gain/Perte (%)</label>
-                        <input type="number" id="pnlPercent" step="0.01" placeholder="0.00">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Date Entrée *</label>
-                        <input type="datetime-local" id="entryDate" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Date Sortie *</label>
-                        <input type="datetime-local" id="exitDate" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Stratégie *</label>
-                    <input type="text" id="strategy" required placeholder="ex: Breakout, Trend Following">
-                </div>
-                <div class="form-group">
-                    <label>Timeframe</label>
-                    <select id="timeframe">
-                        <option value="M1">M1 (1 minute)</option>
-                        <option value="M5">M5 (5 minutes)</option>
-                        <option value="M15">M15 (15 minutes)</option>
-                        <option value="H1">H1 (1 heure)</option>
-                        <option value="H4">H4 (4 heures)</option>
-                        <option value="D1">D1 (Daily)</option>
-                        <option value="W1">W1 (Weekly)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Notes</label>
-                    <textarea id="notes" rows="3" placeholder="Ce que vous avez ressenti, erreurs, leçons apprises..."></textarea>
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="btn-secondary cancel-btn">Annuler</button>
-                    <button type="submit" class="btn-primary">Enregistrer</button>
-                </div>
-            </form>
+  <!-- ===== LOGIN PAGE ===== -->
+  <div id="loginPage" class="auth-container">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="auth-logo">📊</div>
+        <h1 class="auth-title">Connexion</h1>
+        <p class="auth-subtitle">Accédez à votre journal de trading</p>
+      </div>
+      <form id="loginForm" class="auth-form">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="loginEmail" required placeholder="votre@email.com">
         </div>
-    </div>
-
-    <!-- View Trade Modal -->
-    <div id="viewTradeModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Détails du Trade</h2>
-                <button class="close-btn">&times;</button>
-            </div>
-            <div id="tradeDetails" class="trade-details"></div>
-            <div class="form-actions">
-                <button id="editTradeBtn" class="btn-secondary">Modifier</button>
-                <button id="deleteTradeBtn" class="btn-danger">Supprimer</button>
-            </div>
+        <div class="form-group">
+          <label>Mot de passe</label>
+          <input type="password" id="loginPassword" required placeholder="••••••••">
         </div>
-    </div>
-
-    <!-- Settings Modal -->
-    <div id="settingsModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Paramètres</h2>
-                <button class="close-btn">&times;</button>
-            </div>
-            <div class="settings-content">
-                <div class="form-group">
-                    <label>Capital Initial ($)</label>
-                    <input type="number" id="initialCapital" step="0.01" value="10000">
-                </div>
-                <div class="form-group">
-                    <label>Devise</label>
-                    <select id="currency">
-                        <option value="USD">USD ($)</option>
-                        <option value="EUR">EUR (€)</option>
-                        <option value="GBP">GBP (£)</option>
-                    </select>
-                </div>
-                <div class="form-actions">
-                    <button id="clearDataBtn" class="btn-danger">Supprimer toutes les données</button>
-                    <button id="saveSettingsBtn" class="btn-primary">Enregistrer</button>
-                </div>
-            </div>
+        <div class="forgot-link">
+          <a href="#" id="forgotPasswordLink">Mot de passe oublié ?</a>
         </div>
+        <button type="submit" class="btn-primary auth-submit">Se connecter</button>
+        <p class="auth-link">Pas encore de compte ? <a href="#" id="goToSignup">Créer un compte</a></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== SIGNUP PAGE ===== -->
+  <div id="signupPage" class="auth-container" style="display:none">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="auth-logo">📊</div>
+        <h1 class="auth-title">Inscription</h1>
+        <p class="auth-subtitle">Créez votre journal de trading professionnel</p>
+      </div>
+      <form id="signupForm" class="auth-form">
+        <div class="form-group">
+          <label>Nom complet</label>
+          <input type="text" id="signupName" required placeholder="Jean Dupont">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="signupEmail" required placeholder="votre@email.com">
+        </div>
+        <div class="form-group">
+          <label>Mot de passe</label>
+          <input type="password" id="signupPassword" required placeholder="Minimum 8 caractères" minlength="8">
+        </div>
+        <div class="form-group">
+          <label>Confirmer le mot de passe</label>
+          <input type="password" id="signupConfirmPassword" required placeholder="••••••••" minlength="8">
+        </div>
+        <button type="submit" class="btn-primary auth-submit">Créer mon compte</button>
+        <p class="auth-link">Déjà un compte ? <a href="#" id="goToLogin">Se connecter</a></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== FORGOT PASSWORD PAGE ===== -->
+  <div id="forgotPage" class="auth-container" style="display:none">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="auth-logo">🔐</div>
+        <h1 class="auth-title">Mot de passe oublié</h1>
+        <p class="auth-subtitle">Entrez votre email pour recevoir un code de vérification</p>
+      </div>
+      <form id="forgotForm" class="auth-form">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="forgotEmail" required placeholder="votre@email.com">
+        </div>
+        <button type="submit" class="btn-primary auth-submit">Envoyer le code</button>
+        <p class="auth-link"><a href="#" id="backToLoginFromForgot">Retour à la connexion</a></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== OTP VERIFICATION PAGE ===== -->
+  <div id="otpPage" class="auth-container" style="display:none">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="auth-logo">✉️</div>
+        <h1 class="auth-title">Vérification</h1>
+        <p class="auth-subtitle">Entrez le code envoyé à <span id="otpEmailDisplay" class="otp-email"></span></p>
+      </div>
+      <form id="otpForm" class="auth-form">
+        <div class="otp-container">
+          <input type="text" class="otp-input" maxlength="1" data-index="0" inputmode="numeric" autocomplete="one-time-code">
+          <input type="text" class="otp-input" maxlength="1" data-index="1" inputmode="numeric">
+          <input type="text" class="otp-input" maxlength="1" data-index="2" inputmode="numeric">
+          <input type="text" class="otp-input" maxlength="1" data-index="3" inputmode="numeric">
+          <input type="text" class="otp-input" maxlength="1" data-index="4" inputmode="numeric">
+          <input type="text" class="otp-input" maxlength="1" data-index="5" inputmode="numeric">
+        </div>
+        <button type="submit" class="btn-primary auth-submit">Vérifier le code</button>
+        <p class="resend-timer" id="resendTimer">Renvoyer le code dans <span id="resendCountdown">60</span>s</p>
+        <p class="resend-timer" id="resendLink" style="display:none"><a id="resendOtpBtn">Renvoyer le code</a></p>
+        <p class="auth-link"><a href="#" id="backToLoginFromOtp">Retour à la connexion</a></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== RESET PASSWORD PAGE ===== -->
+  <div id="resetPasswordPage" class="auth-container" style="display:none">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="auth-logo">🔒</div>
+        <h1 class="auth-title">Nouveau mot de passe</h1>
+        <p class="auth-subtitle">Créez votre nouveau mot de passe</p>
+      </div>
+      <form id="resetPasswordForm" class="auth-form">
+        <div class="form-group">
+          <label>Nouveau mot de passe</label>
+          <input type="password" id="newPassword" required placeholder="Minimum 8 caractères" minlength="8">
+        </div>
+        <div class="form-group">
+          <label>Confirmer le mot de passe</label>
+          <input type="password" id="confirmNewPassword" required placeholder="••••••••" minlength="8">
+        </div>
+        <button type="submit" class="btn-primary auth-submit">Réinitialiser le mot de passe</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== MAIN APP ===== -->
+  <div id="appPage" class="app-container" style="display:none">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-brand">
+        <div class="header-logo">📊</div>
+        <div>
+          <h1>Trading Journal</h1>
+          <p class="header-subtitle">Track. Analyze. Improve.</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="exportPdfBtn" class="btn-icon" title="Exporter PDF">📄</button>
+        <button id="exportBtn" class="btn-icon" title="Exporter CSV">📥</button>
+        <div id="themeToggle" class="theme-toggle" title="Changer le thème"></div>
+        <button id="settingsBtn" class="btn-icon" title="Paramètres">⚙️</button>
+        <div class="user-menu" style="position:relative">
+          <div id="userAvatar" class="user-avatar">U</div>
+          <div id="userDropdown" class="user-dropdown">
+            <div id="dropdownUserName" style="padding:10px 14px;font-weight:600;font-size:0.9rem;border-bottom:1px solid var(--border-color);"></div>
+            <div id="dropdownUserEmail" style="padding:4px 14px 10px;font-size:0.8rem;color:var(--text-muted);"></div>
+            <div class="user-dropdown-divider"></div>
+            <button class="user-dropdown-item" id="profileBtn">👤 Mon profil</button>
+            <button class="user-dropdown-item" id="logoutBtn">🚪 Déconnexion</button>
+            <div class="user-dropdown-divider"></div>
+            <button class="user-dropdown-item danger" id="deleteAccountBtn">🗑️ Supprimer mon compte</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+      <button class="nav-btn active" data-tab="trades">📈 Trades</button>
+      <button class="nav-btn" data-tab="analysis">📊 Analyse</button>
+      <button class="nav-btn" data-tab="stats">📉 Stats</button>
+    </nav>
+
+    <!-- Dashboard Overview -->
+    <div class="dashboard" id="dashboardBar">
+      <div class="dashboard-item">
+        <div class="dashboard-label">Capital</div>
+        <div id="dashCapital" class="dashboard-value neutral">$0.00</div>
+      </div>
+      <div class="dashboard-item">
+        <div class="dashboard-label">P&L Total</div>
+        <div id="dashPnl" class="dashboard-value neutral">$0.00</div>
+      </div>
+      <div class="dashboard-item">
+        <div class="dashboard-label">Winrate</div>
+        <div id="dashWinrate" class="dashboard-value gold">0%</div>
+      </div>
+      <div class="dashboard-item">
+        <div class="dashboard-label">Trades</div>
+        <div id="dashTrades" class="dashboard-value neutral">0</div>
+      </div>
     </div>
 
-    <script src="js/app.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js');
-        }
-    </script>
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Trades Tab -->
+      <section id="tradesTab" class="tab-content active">
+        <div class="tab-header">
+          <h2>Mes Trades</h2>
+          <button id="addTradeBtn" class="btn-primary">+ Nouveau Trade</button>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters">
+          <select id="filterStrategy" class="filter-select">
+            <option value="">Toutes les stratégies</option>
+          </select>
+          <select id="filterTimeframe" class="filter-select">
+            <option value="">Tous les timeframes</option>
+            <option value="M1">M1</option>
+            <option value="M5">M5</option>
+            <option value="M15">M15</option>
+            <option value="H1">H1</option>
+            <option value="H4">H4</option>
+            <option value="D1">D1</option>
+            <option value="W1">W1</option>
+          </select>
+          <select id="filterMonth" class="filter-select">
+            <option value="">Tous les mois</option>
+          </select>
+        </div>
+
+        <!-- Trades List -->
+        <div id="tradesList" class="trades-list">
+          <div class="empty-state">
+            <p>Aucun trade enregistré</p>
+            <p>Commencez par ajouter votre premier trade !</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Analysis Tab -->
+      <section id="analysisTab" class="tab-content">
+        <div class="tab-header">
+          <h2>Analyse Mensuelle</h2>
+          <select id="analysisMonth" class="month-select"></select>
+        </div>
+
+        <div class="analysis-cards">
+          <div class="card">
+            <h3>Profit/Perte Total</h3>
+            <p id="totalPnL" class="value">$0.00</p>
+          </div>
+          <div class="card">
+            <h3>Winrate</h3>
+            <p id="winrate" class="value">0%</p>
+          </div>
+          <div class="card">
+            <h3>Nombre de Trades</h3>
+            <p id="totalTrades" class="value">0</p>
+          </div>
+          <div class="card">
+            <h3>R/R Moyen</h3>
+            <p id="avgRR" class="value">0.00</p>
+          </div>
+        </div>
+
+        <div class="analysis-section">
+          <h3>Performance par Stratégie</h3>
+          <div id="strategyPerformance" class="strategy-list"></div>
+        </div>
+
+        <div class="analysis-section">
+          <h3>Meilleur Trade</h3>
+          <div id="bestTrade" class="trade-highlight"></div>
+        </div>
+
+        <div class="analysis-section">
+          <h3>Pire Trade</h3>
+          <div id="worstTrade" class="trade-highlight"></div>
+        </div>
+      </section>
+
+      <!-- Stats Tab -->
+      <section id="statsTab" class="tab-content">
+        <div class="tab-header">
+          <h2>Statistiques Globales</h2>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <h3>Capital Total</h3>
+            <p id="totalCapital" class="value">$0.00</p>
+          </div>
+          <div class="stat-card">
+            <h3>Trades Gagnants</h3>
+            <p id="winningTrades" class="value">0</p>
+          </div>
+          <div class="stat-card">
+            <h3>Trades Perdants</h3>
+            <p id="losingTrades" class="value">0</p>
+          </div>
+          <div class="stat-card">
+            <h3>Gain Moyen</h3>
+            <p id="avgWin" class="value">$0.00</p>
+          </div>
+          <div class="stat-card">
+            <h3>Perte Moyenne</h3>
+            <p id="avgLoss" class="value">$0.00</p>
+          </div>
+          <div class="stat-card">
+            <h3>Plus Longue Série Gagnante</h3>
+            <p id="longestWinStreak" class="value">0</p>
+          </div>
+        </div>
+
+        <div class="chart-section">
+          <h3>Évolution du Capital</h3>
+          <canvas id="capitalChart"></canvas>
+        </div>
+
+        <div class="chart-section">
+          <h3>Distribution Gains/Pertes</h3>
+          <canvas id="pnlChart"></canvas>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Add Trade Modal -->
+  <div id="addTradeModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Nouveau Trade</h2>
+        <button class="close-btn">&times;</button>
+      </div>
+      <form id="tradeForm">
+        <div class="form-group">
+          <label>Paire/Actif *</label>
+          <input type="text" id="pair" required placeholder="ex: EUR/USD, BTC/USDT">
+        </div>
+        <div class="form-group">
+          <label>Direction *</label>
+          <select id="direction" required>
+            <option value="long">Long (Achat)</option>
+            <option value="short">Short (Vente)</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Prix Entrée *</label>
+            <input type="number" id="entryPrice" required step="0.0001" placeholder="0.0000">
+          </div>
+          <div class="form-group">
+            <label>Prix Sortie *</label>
+            <input type="number" id="exitPrice" required step="0.0001" placeholder="0.0000">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Taille Position *</label>
+            <input type="number" id="positionSize" required step="0.01" placeholder="0.00">
+          </div>
+          <div class="form-group">
+            <label>Unité</label>
+            <select id="positionUnit">
+              <option value="units">Unités</option>
+              <option value="lots">Lots</option>
+              <option value="usd">USD</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Gain/Perte ($)</label>
+            <input type="number" id="pnl" step="0.01" placeholder="0.00">
+          </div>
+          <div class="form-group">
+            <label>Gain/Perte (%)</label>
+            <input type="number" id="pnlPercent" step="0.01" placeholder="0.00">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Date Entrée *</label>
+            <input type="datetime-local" id="entryDate" required>
+          </div>
+          <div class="form-group">
+            <label>Date Sortie *</label>
+            <input type="datetime-local" id="exitDate" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Stratégie *</label>
+          <input type="text" id="strategy" required placeholder="ex: Breakout, Trend Following">
+        </div>
+        <div class="form-group">
+          <label>Timeframe</label>
+          <select id="timeframe">
+            <option value="M1">M1 (1 minute)</option>
+            <option value="M5">M5 (5 minutes)</option>
+            <option value="M15">M15 (15 minutes)</option>
+            <option value="H1">H1 (1 heure)</option>
+            <option value="H4">H4 (4 heures)</option>
+            <option value="D1">D1 (Daily)</option>
+            <option value="W1">W1 (Weekly)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Notes</label>
+          <textarea id="notes" rows="3" placeholder="Ce que vous avez ressenti, erreurs, leçons apprises..."></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-secondary cancel-btn">Annuler</button>
+          <button type="submit" class="btn-primary">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- View Trade Modal -->
+  <div id="viewTradeModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Détails du Trade</h2>
+        <button class="close-btn">&times;</button>
+      </div>
+      <div id="tradeDetails" class="trade-details"></div>
+      <div class="form-actions" style="padding:0 24px 24px">
+        <button id="editTradeBtn" class="btn-secondary">Modifier</button>
+        <button id="deleteTradeBtn" class="btn-danger">Supprimer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Paramètres</h2>
+        <button class="close-btn">&times;</button>
+      </div>
+      <div class="settings-content">
+        <div class="form-group">
+          <label>Capital Initial ($)</label>
+          <input type="number" id="initialCapital" step="0.01" value="10000">
+        </div>
+        <div class="form-group">
+          <label>Devise</label>
+          <select id="currency">
+            <option value="USD">USD ($)</option>
+            <option value="EUR">EUR (€)</option>
+            <option value="GBP">GBP (£)</option>
+          </select>
+        </div>
+        <div class="form-actions" style="padding-top:20px;border-top:1px solid var(--border-color)">
+          <button id="clearDataBtn" class="btn-danger">Supprimer toutes les données</button>
+          <button id="saveSettingsBtn" class="btn-primary">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Modal -->
+  <div id="profileModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Mon Profil</h2>
+        <button class="close-btn">&times;</button>
+      </div>
+      <div class="profile-section">
+        <div class="profile-header-card">
+          <div id="profileAvatarLg" class="profile-avatar-lg">U</div>
+          <div class="profile-info">
+            <h3 id="profileName">Utilisateur</h3>
+            <p id="profileEmail">email@example.com</p>
+          </div>
+        </div>
+        <div class="profile-stats">
+          <div class="profile-stat">
+            <div class="profile-stat-label">Trades enregistrés</div>
+            <div id="profileTradeCount" class="profile-stat-value">0</div>
+          </div>
+          <div class="profile-stat">
+            <div class="profile-stat-label">Membre depuis</div>
+            <div id="profileMemberSince" class="profile-stat-value">-</div>
+          </div>
+        </div>
+        <form id="profileForm">
+          <div class="form-group">
+            <label>Nom</label>
+            <input type="text" id="profileEditName" required placeholder="Votre nom">
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="profileEditEmail" required placeholder="votre@email.com">
+          </div>
+          <div class="form-group">
+            <label>Nouveau mot de passe (laisser vide si inchangé)</label>
+            <input type="password" id="profileEditPassword" placeholder="Nouveau mot de passe" minlength="8">
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-secondary cancel-btn">Annuler</button>
+            <button type="submit" class="btn-primary">Sauvegarder</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Hidden PDF content -->
+  <div id="pdfContent" class="pdf-export"></div>
+
+  <script src="js/app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
+  </script>
 </body>
 </html>
