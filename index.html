@@ -10,6 +10,15 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="images/icon-192.svg">
+  <script>
+    window.showAuthPage = function showAuthPage(pageId) {
+      var pages = ['loginPage', 'signupPage', 'forgotPage', 'otpPage', 'resetPasswordPage', 'appPage'];
+      for (var i = 0; i < pages.length; i++) {
+        var el = document.getElementById(pages[i]);
+        if (el) el.style.display = (pages[i] === pageId) ? '' : 'none';
+      }
+    };
+  </script>
 </head>
 <body>
 
@@ -31,10 +40,10 @@
           <input type="password" id="loginPassword" required placeholder="••••••••">
         </div>
         <div class="forgot-link">
-          <a href="javascript:void(0)" id="forgotPasswordLink">Mot de passe oublié ?</a>
+          <a href="javascript:void(0)" id="forgotPasswordLink" onclick="window.showAuthPage('forgotPage'); return false;">Mot de passe oublié ?</a>
         </div>
         <button type="submit" class="btn-primary auth-submit">Se connecter</button>
-        <p class="auth-link">Pas encore de compte ? <a href="javascript:void(0)" id="goToSignup">Créer un compte</a></p>
+        <p class="auth-link">Pas encore de compte ? <a href="javascript:void(0)" id="goToSignup" onclick="window.showAuthPage('signupPage'); return false;">Créer un compte</a></p>
       </form>
     </div>
   </div>
@@ -65,7 +74,7 @@
           <input type="password" id="signupConfirmPassword" required placeholder="••••••••" minlength="8">
         </div>
         <button type="submit" class="btn-primary auth-submit">Créer mon compte</button>
-        <p class="auth-link">Déjà un compte ? <a href="javascript:void(0)" id="goToLogin">Se connecter</a></p>
+        <p class="auth-link">Déjà un compte ? <a href="javascript:void(0)" id="goToLogin" onclick="window.showAuthPage('loginPage'); return false;">Se connecter</a></p>
       </form>
     </div>
   </div>
@@ -84,7 +93,7 @@
           <input type="email" id="forgotEmail" required placeholder="votre@email.com">
         </div>
         <button type="submit" class="btn-primary auth-submit">Envoyer le code</button>
-        <p class="auth-link"><a href="javascript:void(0)" id="backToLoginFromForgot">Retour à la connexion</a></p>
+        <p class="auth-link"><a href="javascript:void(0)" id="backToLoginFromForgot" onclick="window.showAuthPage('loginPage'); return false;">Retour à la connexion</a></p>
       </form>
     </div>
   </div>
@@ -109,7 +118,7 @@
         <button type="submit" class="btn-primary auth-submit">Vérifier le code</button>
         <p class="resend-timer" id="resendTimer">Renvoyer le code dans <span id="resendCountdown">60</span>s</p>
         <p class="resend-timer" id="resendLink" style="display:none"><a id="resendOtpBtn">Renvoyer le code</a></p>
-        <p class="auth-link"><a href="javascript:void(0)" id="backToLoginFromOtp">Retour à la connexion</a></p>
+        <p class="auth-link"><a href="javascript:void(0)" id="backToLoginFromOtp" onclick="window.showAuthPage('loginPage'); return false;">Retour à la connexion</a></p>
       </form>
     </div>
   </div>
