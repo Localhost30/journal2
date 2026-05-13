@@ -14,6 +14,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Health check pour Render
+app.get('/health', (req, res) => res.status(200).json({ status: 'ok' }));
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/trades', tradeRoutes);
@@ -28,8 +31,19 @@ app.get('*', (req, res) => {
 // Connect to DB then start server
 const PORT = process.env.PORT || 3000;
 
-connectDB().then(() => {
+connectDB().then((connected) => {
+  if (!connected) {
+    console.warn('⚠️  Base de données non disponible au démarrage');
+  }
   app.listen(PORT, () => {
     console.log(`Serveur démarré sur le port ${PORT}`);
   });
+});
+
+// Gérer les erreurs non-catchées
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err.message);
+});
+process.on('unhandledRejection', (reason) => {
+  console.error('Unhandled Rejection:', reason);
 });
