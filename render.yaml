@@ -7,6 +7,8 @@ services:
     envVars:
       - key: PORT
         value: "3000"
+      - key: NODE_ENV
+        value: "production"
       - key: MONGODB_URI
         sync: false
       - key: JWT_SECRET
@@ -25,4 +27,4 @@ services:
         sync: false
       - key: EMAIL_FROM
         sync: false
-    healthCheckPath: /
+    healthCheckPath: /health

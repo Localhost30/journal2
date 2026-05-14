@@ -895,7 +895,8 @@ form {
 }
 
 /* ===== AUTH PAGES ===== */
-.auth-container {
+.auth-container,
+.auth-page {
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -1477,14 +1478,66 @@ form {
   display: none;
 }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 768px) {
+/* ===== RESPONSIVE UTILITIES ===== */
+.mobile-only {
+  display: none !important;
+}
+
+/* Target thumb minimum for touch */
+select, button, input, a, .btn-icon, .nav-btn, .trade-card, .otp-input {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* iPhone notch / safe-area support */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .auth-page,
   .app-container {
-    padding: 12px;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* ===== TABLETTE ===== */
+@media (max-width: 1024px) {
+  .app-container {
+    padding: 16px 20px;
+    max-width: 100%;
+  }
+
+  .dashboard {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .analysis-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .trade-info {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .modal-content {
+    max-width: 90vw;
   }
 
   .header h1 {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+  }
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+  .app-container {
+    padding: 12px 14px;
+  }
+
+  .header h1 {
+    font-size: 1.15rem;
   }
 
   .header-subtitle {
@@ -1492,34 +1545,44 @@ form {
   }
 
   .nav {
-    flex-direction: column;
     gap: 4px;
+    padding: 4px;
+    margin-bottom: 18px;
   }
 
   .nav-btn {
-    padding: 10px;
+    padding: 10px 14px;
+    font-size: 0.8rem;
   }
 
   .form-row {
     grid-template-columns: 1fr;
+    gap: 12px;
   }
 
   .analysis-cards,
   .stats-grid {
     grid-template-columns: 1fr 1fr;
+    gap: 10px;
   }
 
   .trade-info {
     grid-template-columns: 1fr 1fr;
+    gap: 8px;
   }
 
   .modal-content {
-    max-height: 95vh;
-    border-radius: var(--radius-lg);
+    max-height: 92vh;
+    width: 100%;
+    max-width: 100vw;
+    border-radius: var(--radius-lg) var(--radius-lg) var(--radius-xl) var(--radius-xl);
+    margin: 0 8px;
   }
 
   .auth-card {
     padding: 28px 24px;
+    max-width: 100%;
+    margin: 0 12px;
   }
 
   .strategy-stats {
@@ -1531,38 +1594,243 @@ form {
   .header-brand {
     gap: 10px;
   }
+
+  .header-actions {
+    gap: 6px;
+  }
+
+  .btn-icon {
+    padding: 8px 10px;
+    font-size: 1rem;
+  }
+
+  .user-avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .trade-card {
+    padding: 14px 16px;
+  }
+
+  .trade-header {
+    margin-bottom: 10px;
+  }
+
+  .trade-pair {
+    font-size: 0.95rem;
+  }
+
+  .filters {
+    gap: 8px;
+  }
+
+  .filter-select,
+  .month-select {
+    min-width: 140px;
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+
+  .card,
+  .stat-card {
+    padding: 18px 16px;
+  }
+
+  .card .value,
+  .stat-card .value {
+    font-size: 1.2rem;
+  }
+
+  .card h3,
+  .stat-card h3 {
+    font-size: 0.7rem;
+  }
+
+  .dashboard {
+    padding: 16px 12px;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .dashboard-item {
+    padding: 10px 6px;
+  }
+
+  .dashboard-item:not(:last-child)::after {
+    display: none;
+  }
+
+  .dashboard-label {
+    font-size: 0.65rem;
+    margin-bottom: 4px;
+  }
+
+  .dashboard-value {
+    font-size: 1rem;
+  }
+
+  .chart-section {
+    padding: 18px 16px;
+  }
+
+  .chart-section h3 {
+    font-size: 0.85rem;
+    margin-bottom: 14px;
+  }
+
+  .chart-section canvas {
+    max-height: 240px;
+  }
+
+  .toast-container {
+    top: auto;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    align-items: center;
+  }
+
+  .toast {
+    min-width: auto;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  /* Mobile menu */
+  .user-dropdown {
+    position: fixed;
+    top: 80px;
+    left: 12px;
+    right: 12px;
+    z-index: 200;
+    min-width: auto;
+    margin: 0;
+  }
 }
 
+/* ===== PETITS ECRANS (iPhone, Android) ===== */
 @media (max-width: 480px) {
+  body {
+    font-size: 0.9rem;
+  }
+
+  .app-container {
+    padding: 8px 12px;
+  }
+
+  .auth-card {
+    padding: 24px 18px;
+    border-radius: var(--radius-lg);
+  }
+
+  .auth-logo {
+    width: 48px;
+    height: 48px;
+    font-size: 1.5rem;
+  }
+
+  .auth-title {
+    font-size: 1.25rem;
+  }
+
+  .otp-input {
+    width: 40px;
+    height: 48px;
+    font-size: 1.2rem;
+  }
+
+  .otp-container {
+    gap: 6px;
+    margin: 18px 0;
+  }
+
+  .header {
+    padding: 12px 0;
+    margin-bottom: 16px;
+  }
+
+  .header-logo {
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+  }
+
+  .header h1 {
+    font-size: 1rem;
+  }
+
+  .nav {
+    margin-bottom: 16px;
+  }
+
+  .nav-btn {
+    padding: 8px 10px;
+    font-size: 0.75rem;
+    letter-spacing: 0;
+  }
+
   .analysis-cards,
   .stats-grid {
     grid-template-columns: 1fr;
+    margin-bottom: 16px;
+  }
+
+  .analysis-section {
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+
+  .chart-section {
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+
+  .trade-card {
+    padding: 12px 14px;
+  }
+
+  .trade-info {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    font-size: 0.82rem;
+  }
+
+  .trade-header {
+    margin-bottom: 8px;
+  }
+
+  .trade-pair {
+    font-size: 0.92rem;
+  }
+
+  .trade-direction {
+    padding: 3px 8px;
+    font-size: 0.7rem;
   }
 
   .filters {
     flex-direction: column;
+    gap: 8px;
   }
 
   .filter-select,
   .month-select {
     width: 100%;
     min-width: auto;
-  }
-
-  .auth-card {
-    padding: 24px 20px;
-  }
-
-  .otp-input {
-    width: 44px;
-    height: 52px;
-    font-size: 1.3rem;
+    padding: 8px 12px;
+    font-size: 0.8rem;
   }
 
   .tab-header {
     flex-direction: column;
     gap: 12px;
     align-items: flex-start;
+    margin-bottom: 18px;
+  }
+
+  .tab-header h2 {
+    font-size: 1.2rem;
   }
 
   .tab-header .btn-primary {
@@ -1571,14 +1839,278 @@ form {
   }
 
   .dashboard {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    padding: 14px 12px;
+    margin-bottom: 16px;
+    border-radius: var(--radius-md);
   }
 
-  .dashboard-item:not(:last-child)::after {
-    display: none;
+  .dashboard-value {
+    font-size: 0.95rem;
+  }
+
+  .modal-content {
+    max-height: 100dvh;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: 100vw;
+    width: 100%;
+    margin: 0;
+    animation: mobileModalUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @keyframes mobileModalUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+
+  .modal {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .modal-header {
+    padding: 18px 20px;
+    position: sticky;
+    top: 0;
+    background: var(--bg-secondary);
+    z-index: 10;
+  }
+
+  .modal-header h2 {
+    font-size: 1.05rem;
+  }
+
+  /* Fix vertical scrolling inside modal with fixed header */
+  .modal .form-actions {
+    position: sticky;
+    bottom: 0;
+    background: var(--bg-secondary);
+    z-index: 10;
+    padding: 20px 24px;
+    margin: 0;
+    border-top: 1px solid var(--border-color);
+  }
+
+  form {
+    padding: 20px 24px;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  .form-group label {
+    font-size: 0.78rem;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 10px 12px;
+    font-size: 0.85rem;
+  }
+
+  .btn-primary, .btn-secondary, .btn-danger {
+    padding: 12px 18px;
+    font-size: 0.85rem;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .form-actions .btn-secondary + .btn-primary,
+  .form-actions .btn-primary + .btn-secondary {
+    flex: 1;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .profile-header-card {
+    padding: 14px;
+    margin-bottom: 18px;
+  }
+
+  .profile-avatar-lg {
+    width: 52px;
+    height: 52px;
+    font-size: 1.2rem;
   }
 
   .profile-stats {
     grid-template-columns: 1fr;
+    gap: 8px;
   }
+
+  .empty-state {
+    padding: 40px 20px;
+  }
+
+  .empty-state p:first-child {
+    font-size: 1rem;
+  }
+
+  .strategy-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .strategy-stats {
+    align-items: flex-start;
+  }
+
+  .trade-highlight {
+    padding: 12px;
+  }
+
+  .trade-details {
+    padding: 20px;
+  }
+
+  .trade-detail-item {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 0;
+    gap: 4px;
+  }
+
+  .settings-content {
+    padding: 20px;
+  }
+
+  .toast-container {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+  }
+
+  .toast {
+    padding: 12px 16px;
+    font-size: 0.82rem;
+  }
+
+  .resend-timer {
+    font-size: 0.8rem;
+  }
+
+  /* Hide desktop only on small screens */
+  .desktop-only {
+    display: none !important;
+  }
+
+  .mobile-only {
+    display: flex !important;
+  }
+}
+
+/* ===== TRÈS PETITS ECRANS (iPhone SE, anciens Android) ===== */
+@media (max-width: 360px) {
+  .app-container {
+    padding: 6px 10px;
+  }
+
+  .auth-card {
+    padding: 20px 14px;
+  }
+
+  .header h1 {
+    font-size: 0.9rem;
+  }
+
+  .nav-btn {
+    padding: 6px 8px;
+    font-size: 0.7rem;
+  }
+
+  .otp-input {
+    width: 36px;
+    height: 44px;
+    font-size: 1.05rem;
+  }
+
+  .dashboard {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+    padding: 10px 10px;
+  }
+
+  .dashboard-value {
+    font-size: 0.85rem;
+  }
+
+  .dashboard-label {
+    font-size: 0.6rem;
+  }
+
+  .btn-icon {
+    padding: 6px 8px;
+    font-size: 0.9rem;
+  }
+
+  .card .value,
+  .stat-card .value {
+    font-size: 1.05rem;
+  }
+
+  .trade-info {
+    font-size: 0.78rem;
+  }
+
+  .modal-header {
+    padding: 14px 16px;
+  }
+
+  form {
+    padding: 16px 18px;
+  }
+}
+
+/* ===== MOBILE MENU ===== */
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 56px;
+  right: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 8px 4px;
+  box-shadow: var(--shadow-lg);
+  z-index: 150;
+  min-width: 240px;
+  flex-direction: column;
+  gap: 2px;
+  animation: fadeIn 0.2s ease;
+}
+
+.mobile-menu.open {
+  display: flex;
+}
+
+.mobile-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  text-align: left;
+  width: 100%;
+}
+
+.mobile-menu-item:hover {
+  background: rgba(255,255,255,0.05);
+  color: var(--text-primary);
 }

@@ -10,25 +10,16 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="images/icon-192.svg">
-  <script>
-    window.showAuthPage = function showAuthPage(pageId) {
-      var pages = ['loginPage', 'signupPage', 'forgotPage', 'otpPage', 'resetPasswordPage', 'appPage'];
-      for (var i = 0; i < pages.length; i++) {
-        var el = document.getElementById(pages[i]);
-        if (el) el.style.display = (pages[i] === pageId) ? '' : 'none';
-      }
-    };
-  </script>
 </head>
 <body>
 
   <!-- ===== LOGIN PAGE ===== -->
-  <div id="loginPage" class="auth-container">
+  <div id="loginPage" class="auth-page" data-auth="loginPage">
     <div class="auth-card">
       <div class="auth-header">
-        <div class="auth-logo">📊</div>
+        <div class="auth-logo">&#x1F4CA;</div>
         <h1 class="auth-title">Connexion</h1>
-        <p class="auth-subtitle">Accédez à votre journal de trading</p>
+        <p class="auth-subtitle">Accedez a votre journal de trading</p>
       </div>
       <form id="loginForm" class="auth-form">
         <div class="form-group">
@@ -37,24 +28,24 @@
         </div>
         <div class="form-group">
           <label>Mot de passe</label>
-          <input type="password" id="loginPassword" required placeholder="••••••••">
+          <input type="password" id="loginPassword" required placeholder="********">
         </div>
         <div class="forgot-link">
-          <a href="javascript:void(0)" id="forgotPasswordLink" onclick="window.showAuthPage('forgotPage'); return false;">Mot de passe oublié ?</a>
+          <a href="#" id="forgotPasswordLink">Mot de passe oublie ?</a>
         </div>
         <button type="submit" class="btn-primary auth-submit">Se connecter</button>
-        <p class="auth-link">Pas encore de compte ? <a href="javascript:void(0)" id="goToSignup" onclick="window.showAuthPage('signupPage'); return false;">Créer un compte</a></p>
+        <p class="auth-link">Pas encore de compte ? <a href="#" id="goToSignup">Creer un compte</a></p>
       </form>
     </div>
   </div>
 
   <!-- ===== SIGNUP PAGE ===== -->
-  <div id="signupPage" class="auth-container" style="display:none">
+  <div id="signupPage" class="auth-page" data-auth="signupPage">
     <div class="auth-card">
       <div class="auth-header">
-        <div class="auth-logo">📊</div>
+        <div class="auth-logo">&#x1F4CA;</div>
         <h1 class="auth-title">Inscription</h1>
-        <p class="auth-subtitle">Créez votre journal de trading professionnel</p>
+        <p class="auth-subtitle">Creez votre journal de trading professionnel</p>
       </div>
       <form id="signupForm" class="auth-form">
         <div class="form-group">
@@ -67,25 +58,25 @@
         </div>
         <div class="form-group">
           <label>Mot de passe</label>
-          <input type="password" id="signupPassword" required placeholder="Minimum 8 caractères" minlength="8">
+          <input type="password" id="signupPassword" required placeholder="Minimum 8 caracteres" minlength="8">
         </div>
         <div class="form-group">
           <label>Confirmer le mot de passe</label>
-          <input type="password" id="signupConfirmPassword" required placeholder="••••••••" minlength="8">
+          <input type="password" id="signupConfirmPassword" required placeholder="********" minlength="8">
         </div>
-        <button type="submit" class="btn-primary auth-submit">Créer mon compte</button>
-        <p class="auth-link">Déjà un compte ? <a href="javascript:void(0)" id="goToLogin" onclick="window.showAuthPage('loginPage'); return false;">Se connecter</a></p>
+        <button type="submit" class="btn-primary auth-submit">Creer mon compte</button>
+        <p class="auth-link">Deja un compte ? <a href="#" id="goToLogin">Se connecter</a></p>
       </form>
     </div>
   </div>
 
   <!-- ===== FORGOT PASSWORD PAGE ===== -->
-  <div id="forgotPage" class="auth-container" style="display:none">
+  <div id="forgotPage" class="auth-page" data-auth="forgotPage">
     <div class="auth-card">
       <div class="auth-header">
-        <div class="auth-logo">🔐</div>
-        <h1 class="auth-title">Mot de passe oublié</h1>
-        <p class="auth-subtitle">Entrez votre email pour recevoir un code de vérification</p>
+        <div class="auth-logo">&#x1F510;</div>
+        <h1 class="auth-title">Mot de passe oublie</h1>
+        <p class="auth-subtitle">Simplifiez votre trading avec grace</p>
       </div>
       <form id="forgotForm" class="auth-form">
         <div class="form-group">
@@ -93,18 +84,18 @@
           <input type="email" id="forgotEmail" required placeholder="votre@email.com">
         </div>
         <button type="submit" class="btn-primary auth-submit">Envoyer le code</button>
-        <p class="auth-link"><a href="javascript:void(0)" id="backToLoginFromForgot" onclick="window.showAuthPage('loginPage'); return false;">Retour à la connexion</a></p>
+        <p class="auth-link"><a href="#" id="backToLoginFromForgot">Retour a la connexion</a></p>
       </form>
     </div>
   </div>
 
   <!-- ===== OTP VERIFICATION PAGE ===== -->
-  <div id="otpPage" class="auth-container" style="display:none">
+  <div id="otpPage" class="auth-page" data-auth="otpPage">
     <div class="auth-card">
       <div class="auth-header">
-        <div class="auth-logo">✉️</div>
-        <h1 class="auth-title">Vérification</h1>
-        <p class="auth-subtitle">Entrez le code envoyé à <span id="otpEmailDisplay" class="otp-email"></span></p>
+        <div class="auth-logo">&#x2709;&#xFE0F;</div>
+        <h1 class="auth-title">Verification</h1>
+        <p class="auth-subtitle">Entrez le code envoye a <span id="otpEmailDisplay" class="otp-email"></span></p>
       </div>
       <form id="otpForm" class="auth-form">
         <div class="otp-container">
@@ -115,72 +106,80 @@
           <input type="text" class="otp-input" maxlength="1" data-index="4" inputmode="numeric">
           <input type="text" class="otp-input" maxlength="1" data-index="5" inputmode="numeric">
         </div>
-        <button type="submit" class="btn-primary auth-submit">Vérifier le code</button>
+        <button type="submit" class="btn-primary auth-submit">Verifier le code</button>
         <p class="resend-timer" id="resendTimer">Renvoyer le code dans <span id="resendCountdown">60</span>s</p>
         <p class="resend-timer" id="resendLink" style="display:none"><a id="resendOtpBtn">Renvoyer le code</a></p>
-        <p class="auth-link"><a href="javascript:void(0)" id="backToLoginFromOtp" onclick="window.showAuthPage('loginPage'); return false;">Retour à la connexion</a></p>
+        <p class="auth-link"><a href="#" id="backToLoginFromOtp">Retour a la connexion</a></p>
       </form>
     </div>
   </div>
 
   <!-- ===== RESET PASSWORD PAGE ===== -->
-  <div id="resetPasswordPage" class="auth-container" style="display:none">
+  <div id="resetPasswordPage" class="auth-page" data-auth="resetPasswordPage">
     <div class="auth-card">
       <div class="auth-header">
-        <div class="auth-logo">🔒</div>
+        <div class="auth-logo">&#x1F512;</div>
         <h1 class="auth-title">Nouveau mot de passe</h1>
-        <p class="auth-subtitle">Créez votre nouveau mot de passe</p>
+        <p class="auth-subtitle">Creez votre nouveau mot de passe</p>
       </div>
       <form id="resetPasswordForm" class="auth-form">
         <div class="form-group">
           <label>Nouveau mot de passe</label>
-          <input type="password" id="newPassword" required placeholder="Minimum 8 caractères" minlength="8">
+          <input type="password" id="newPassword" required placeholder="Minimum 8 caracteres" minlength="8">
         </div>
         <div class="form-group">
           <label>Confirmer le mot de passe</label>
-          <input type="password" id="confirmNewPassword" required placeholder="••••••••" minlength="8">
+          <input type="password" id="confirmNewPassword" required placeholder="********" minlength="8">
         </div>
-        <button type="submit" class="btn-primary auth-submit">Réinitialiser le mot de passe</button>
+        <button type="submit" class="btn-primary auth-submit">Reinitialiser le mot de passe</button>
       </form>
     </div>
   </div>
 
   <!-- ===== MAIN APP ===== -->
-  <div id="appPage" class="app-container" style="display:none">
+  <div id="appPage" class="auth-page" data-auth="appPage">
     <!-- Header -->
     <header class="header">
       <div class="header-brand">
-        <div class="header-logo">📊</div>
+        <div class="header-logo">fr/</div>
         <div>
           <h1>Trading Journal</h1>
           <p class="header-subtitle">Track. Analyze. Improve.</p>
         </div>
       </div>
       <div class="header-actions">
-        <button id="exportPdfBtn" class="btn-icon" title="Exporter PDF">📄</button>
-        <button id="exportBtn" class="btn-icon" title="Exporter CSV">📥</button>
-        <div id="themeToggle" class="theme-toggle" title="Changer le thème"></div>
-        <button id="settingsBtn" class="btn-icon" title="Paramètres">⚙️</button>
+        <button id="exportPdfBtn" class="btn-icon desktop-only" title="Exporter PDF" type="button">&#x1F4C4;</button>
+        <button id="exportBtn" class="btn-icon desktop-only" title="Exporter CSV" type="button">&#x1F4E5;</button>
+        <div id="themeToggle" class="theme-toggle" title="Changer le theme"></div>
+        <button id="settingsBtn" class="btn-icon desktop-only" title="Parametres" type="button">&#x2699;&#xFE0F;</button>
         <div class="user-menu" style="position:relative">
           <div id="userAvatar" class="user-avatar">U</div>
           <div id="userDropdown" class="user-dropdown">
             <div id="dropdownUserName" style="padding:10px 14px;font-weight:600;font-size:0.9rem;border-bottom:1px solid var(--border-color);"></div>
             <div id="dropdownUserEmail" style="padding:4px 14px 10px;font-size:0.8rem;color:var(--text-muted);"></div>
             <div class="user-dropdown-divider"></div>
-            <button class="user-dropdown-item" id="profileBtn">👤 Mon profil</button>
-            <button class="user-dropdown-item" id="logoutBtn">🚪 Déconnexion</button>
+            <button class="user-dropdown-item" id="profileBtn" type="button">&#x1F464; Mon profil</button>
+            <button class="user-dropdown-item" id="logoutBtn" type="button">&#x1F6AA; Deconnexion</button>
             <div class="user-dropdown-divider"></div>
-            <button class="user-dropdown-item danger" id="deleteAccountBtn">🗑️ Supprimer mon compte</button>
+            <button class="user-dropdown-item danger" id="deleteAccountBtn" type="button">&#x1F5D1;&#xFE0F; Supprimer mon compte</button>
           </div>
         </div>
+        <button id="mobileMenuBtn" class="btn-icon mobile-only" title="Menu" type="button" aria-label="Menu">&#x2630;</button>
       </div>
     </header>
 
+    <!-- Mobile Menu Overlay -->
+    <div id="mobileMenu" class="mobile-menu">
+      <button class="mobile-menu-item" id="mobileExportPdfBtn" type="button">&#x1F4C4; Exporter PDF</button>
+      <button class="mobile-menu-item" id="mobileExportBtn" type="button">&#x1F4E5; Exporter CSV</button>
+      <button class="mobile-menu-item" id="mobileSettingsBtn" type="button">&#x2699;&#xFE0F; Parametres</button>
+    </div>
+
     <!-- Navigation -->
     <nav class="nav">
-      <button class="nav-btn active" data-tab="trades">📈 Trades</button>
-      <button class="nav-btn" data-tab="analysis">📊 Analyse</button>
-      <button class="nav-btn" data-tab="stats">📉 Stats</button>
+      <button class="nav-btn active" data-tab="trades" type="button">&#x1F4C8; Trades</button>
+      <button class="nav-btn" data-tab="analysis" type="button">&#x1F4CA; Analyse</button>
+      <button class="nav-btn" data-tab="stats" type="button">&#x1F4C9; Stats</button>
     </nav>
 
     <!-- Dashboard Overview -->
@@ -209,13 +208,13 @@
       <section id="tradesTab" class="tab-content active">
         <div class="tab-header">
           <h2>Mes Trades</h2>
-          <button id="addTradeBtn" class="btn-primary">+ Nouveau Trade</button>
+          <button id="addTradeBtn" class="btn-primary" type="button">+ Nouveau Trade</button>
         </div>
 
         <!-- Filters -->
         <div class="filters">
           <select id="filterStrategy" class="filter-select">
-            <option value="">Toutes les stratégies</option>
+            <option value="">Toutes les strategies</option>
           </select>
           <select id="filterTimeframe" class="filter-select">
             <option value="">Tous les timeframes</option>
@@ -235,7 +234,7 @@
         <!-- Trades List -->
         <div id="tradesList" class="trades-list">
           <div class="empty-state">
-            <p>Aucun trade enregistré</p>
+            <p>Aucun trade enregistre</p>
             <p>Commencez par ajouter votre premier trade !</p>
           </div>
         </div>
@@ -268,7 +267,7 @@
         </div>
 
         <div class="analysis-section">
-          <h3>Performance par Stratégie</h3>
+          <h3>Performance par Strategie</h3>
           <div id="strategyPerformance" class="strategy-list"></div>
         </div>
 
@@ -311,13 +310,13 @@
             <p id="avgLoss" class="value">$0.00</p>
           </div>
           <div class="stat-card">
-            <h3>Plus Longue Série Gagnante</h3>
+            <h3>Plus Longue Serie Gagnante</h3>
             <p id="longestWinStreak" class="value">0</p>
           </div>
         </div>
 
         <div class="chart-section">
-          <h3>Évolution du Capital</h3>
+          <h3>Evolution du Capital</h3>
           <canvas id="capitalChart"></canvas>
         </div>
 
@@ -327,14 +326,14 @@
         </div>
       </section>
     </main>
-  </div>
+  </div> <!-- end appPage -->
 
   <!-- Add Trade Modal -->
   <div id="addTradeModal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
         <h2>Nouveau Trade</h2>
-        <button class="close-btn">&times;</button>
+        <button class="close-btn" type="button">&times;</button>
       </div>
       <form id="tradeForm">
         <div class="form-group">
@@ -350,7 +349,7 @@
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label>Prix Entrée *</label>
+            <label>Prix Entree *</label>
             <input type="number" id="entryPrice" required step="0.0001" placeholder="0.0000">
           </div>
           <div class="form-group">
@@ -364,9 +363,9 @@
             <input type="number" id="positionSize" required step="0.01" placeholder="0.00">
           </div>
           <div class="form-group">
-            <label>Unité</label>
+            <label>Unite</label>
             <select id="positionUnit">
-              <option value="units">Unités</option>
+              <option value="units">Unites</option>
               <option value="lots">Lots</option>
               <option value="usd">USD</option>
             </select>
@@ -384,7 +383,7 @@
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label>Date Entrée *</label>
+            <label>Date Entree *</label>
             <input type="datetime-local" id="entryDate" required>
           </div>
           <div class="form-group">
@@ -393,7 +392,7 @@
           </div>
         </div>
         <div class="form-group">
-          <label>Stratégie *</label>
+          <label>Strategie *</label>
           <input type="text" id="strategy" required placeholder="ex: Breakout, Trend Following">
         </div>
         <div class="form-group">
@@ -410,7 +409,7 @@
         </div>
         <div class="form-group">
           <label>Notes</label>
-          <textarea id="notes" rows="3" placeholder="Ce que vous avez ressenti, erreurs, leçons apprises..."></textarea>
+          <textarea id="notes" rows="3" placeholder="Ce que vous avez ressenti, erreurs, lecons apprises..."></textarea>
         </div>
         <div class="form-actions">
           <button type="button" class="btn-secondary cancel-btn">Annuler</button>
@@ -424,13 +423,13 @@
   <div id="viewTradeModal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
-        <h2>Détails du Trade</h2>
-        <button class="close-btn">&times;</button>
+        <h2>Details du Trade</h2>
+        <button class="close-btn" type="button">&times;</button>
       </div>
       <div id="tradeDetails" class="trade-details"></div>
       <div class="form-actions" style="padding:0 24px 24px">
-        <button id="editTradeBtn" class="btn-secondary">Modifier</button>
-        <button id="deleteTradeBtn" class="btn-danger">Supprimer</button>
+        <button id="editTradeBtn" class="btn-secondary" type="button">Modifier</button>
+        <button id="deleteTradeBtn" class="btn-danger" type="button">Supprimer</button>
       </div>
     </div>
   </div>
@@ -439,8 +438,8 @@
   <div id="settingsModal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
-        <h2>Paramètres</h2>
-        <button class="close-btn">&times;</button>
+        <h2>Parametres</h2>
+        <button class="close-btn" type="button">&times;</button>
       </div>
       <div class="settings-content">
         <div class="form-group">
@@ -451,13 +450,13 @@
           <label>Devise</label>
           <select id="currency">
             <option value="USD">USD ($)</option>
-            <option value="EUR">EUR (€)</option>
-            <option value="GBP">GBP (£)</option>
+            <option value="EUR">EUR (&#x20AC;)</option>
+            <option value="GBP">GBP (P)</option>
           </select>
         </div>
         <div class="form-actions" style="padding-top:20px;border-top:1px solid var(--border-color)">
-          <button id="clearDataBtn" class="btn-danger">Supprimer toutes les données</button>
-          <button id="saveSettingsBtn" class="btn-primary">Enregistrer</button>
+          <button id="clearDataBtn" class="btn-danger" type="button">Supprimer toutes les donnees</button>
+          <button id="saveSettingsBtn" class="btn-primary" type="button">Enregistrer</button>
         </div>
       </div>
     </div>
@@ -468,7 +467,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h2>Mon Profil</h2>
-        <button class="close-btn">&times;</button>
+        <button class="close-btn" type="button">&times;</button>
       </div>
       <div class="profile-section">
         <div class="profile-header-card">
@@ -480,7 +479,7 @@
         </div>
         <div class="profile-stats">
           <div class="profile-stat">
-            <div class="profile-stat-label">Trades enregistrés</div>
+            <div class="profile-stat-label">Trades enregistres</div>
             <div id="profileTradeCount" class="profile-stat-value">0</div>
           </div>
           <div class="profile-stat">
@@ -498,7 +497,7 @@
             <input type="email" id="profileEditEmail" required placeholder="votre@email.com">
           </div>
           <div class="form-group">
-            <label>Nouveau mot de passe (laisser vide si inchangé)</label>
+            <label>Nouveau mot de passe (laisser vide si inchange)</label>
             <input type="password" id="profileEditPassword" placeholder="Nouveau mot de passe" minlength="8">
           </div>
           <div class="form-actions">
@@ -521,7 +520,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js');
+      navigator.serviceWorker.register('/sw.js').catch(err => console.warn('SW error:', err));
     }
   </script>
 </body>

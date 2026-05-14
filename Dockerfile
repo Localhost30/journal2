@@ -1,18 +1,25 @@
 FROM node:20-alpine
 
 LABEL maintainer="Trading Journal Pro"
-LABEL description="Dockerfile pour le déploiement sur Render"
+LABEL description="Plateforme de journal de trading - fullstack SPA"
 
 WORKDIR /app
 
-# Copie des fichiers du backend et installation des déps
-COPY backend/package*.json ./backend/
-RUN cd backend && npm install
+# Variables d'environnement pour Render
+ENV PORT=3000
+ENV NODE_ENV=production
 
-# Copie de tout le projet (frontend + backend)
+# Installation des dependences backend
+COPY backend/package*.json ./backend/
+RUN cd backend && npm ci --only=production
+
+# Copie du projet complet (frontend + backend)
 COPY . .
 
-# Expose le port que Render définira via la variable d'env PORT
+# Verification du backend
+RUN ls -la backend/
+RUN node -e "console.log('Node version:', process.version)"
+
 EXPOSE 3000
 
 CMD ["node", "backend/server.js"]
