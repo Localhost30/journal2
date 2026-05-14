@@ -113,7 +113,14 @@ async function apiCall(endpoint, method, body) {
 
   if (!res.ok) {
     if (res.status === 503 && data.code === 'DB_UNAVAILABLE') {
-      throw new Error('Mode hors-ligne: pas de base de donnees. Passez en mode hors-ligne ou configurez MONGODB_URI.');
+      var err = new Error('HORS_LIGNE');
+      err.offline = true;
+      throw err;
+    }
+    if (res.status === 503) {
+      var err = new Error('HORS_LIGNE');
+      err.offline = true;
+      throw err;
     }
     throw new Error(data.message || 'Erreur serveur');
   }
@@ -200,6 +207,21 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     showToast('Connexion reussie !', 'success');
     showApp();
   } catch (err) {
+    if (err.offline) {
+      // Mode hors-ligne: verifier le localStorage
+      const saved = localStorage.getItem('offlineUsers');
+      const users = saved ? JSON.parse(saved) : {};
+      const user = Object.values(users).find(function(u) { return u.email === email && u.password === password; });
+      if (user) {
+        setToken(user.token);
+        currentUser = { name: user.name, email: user.email };
+        showToast('Connexion reussie (hors ligne) !', 'success');
+        showApp();
+        return;
+      }
+      showToast('Identifiants incorrects (hors ligne)', 'error');
+      return;
+    }
     showToast(err.message, 'error');
   }
 });
@@ -224,6 +246,29 @@ document.getElementById('signupForm').addEventListener('submit', async function(
     showToast('Compte cree avec succes !', 'success');
     showApp();
   } catch (err) {
+    if (err.offline) {
+      // Mode hors-ligne: sauvegarder dans le localStorage
+      var saved = localStorage.getItem('offlineUsers');
+      var users = saved ? JSON.parse(saved) : {};
+      if (users[email]) {
+        showToast('Cet email est deja utilise (hors ligne)', 'error');
+        return;
+      }
+      var offlineUser = {
+        name: name,
+        email: email,
+        password: password,
+        token: btoa(Math.random().toString()),
+        createdAt: new Date().toISOString()
+      };
+      users[email] = offlineUser;
+      localStorage.setItem('offlineUsers', JSON.stringify(users));
+      setToken(offlineUser.token);
+      currentUser = { name: name, email: email };
+      showToast('Compte cree (hors ligne)! Bienvenue sur Trading Journal Pro.', 'success');
+      showApp();
+      return;
+    }
     showToast(err.message, 'error');
   }
 });
