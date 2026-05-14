@@ -112,6 +112,9 @@ async function apiCall(endpoint, method, body) {
   try { data = await res.json(); } catch (e) { data = {}; }
 
   if (!res.ok) {
+    if (res.status === 503 && data.code === 'DB_UNAVAILABLE') {
+      throw new Error('Mode hors-ligne: pas de base de donnees. Passez en mode hors-ligne ou configurez MONGODB_URI.');
+    }
     throw new Error(data.message || 'Erreur serveur');
   }
   return data;

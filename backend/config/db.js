@@ -1,20 +1,25 @@
 const mongoose = require('mongoose');
 
+let isConnected = false;
+
 const connectDB = async () => {
   try {
     const uri = process.env.MONGODB_URI;
     if (!uri) {
-      console.warn('⚠️  MONGODB_URI non défini — pas de connexion base de données');
+      console.warn('MONGODB_URI non defini');
       return false;
     }
     await mongoose.connect(uri);
-    console.log('MongoDB connecté');
+    isConnected = true;
+    console.log('MongoDB connecte');
     return true;
   } catch (err) {
     console.error('Erreur connexion MongoDB:', err.message);
-    console.error('L\'app va démarrer sans base de données (mode lecture seule)');
+    isConnected = false;
     return false;
   }
 };
 
-module.exports = connectDB;
+const getDBStatus = () => isConnected;
+
+module.exports = { connectDB, getDBStatus };
