@@ -2,18 +2,28 @@ const Database = require('better-sqlite3');
 const path = require('path');
 const fs = require('fs');
 
-// Chemin absolu de la base de données
+// Chemin absolu vers le dossier data du backend
 const dataDir = path.resolve(__dirname, '..', 'data');
-const dbPath = process.env.SQLITE_PATH ? path.resolve(process.env.SQLITE_PATH) : path.join(dataDir, 'app.db');
+let dbPath;
+
+if (process.env.SQLITE_PATH) {
+  // Si relatif (ex: ./data/app.db), resoudre depuis le backend, non depuis le CWD
+  dbPath = path.isAbsolute(process.env.SQLITE_PATH)
+    ? process.env.SQLITE_PATH
+    : path.resolve(__dirname, '..', process.env.SQLITE_PATH);
+} else {
+  dbPath = path.join(dataDir, 'app.db');
+}
 
 // Creer le dossier data si inexistant
-if (!fs.existsSync(dataDir)) {
-  fs.mkdirSync(dataDir, { recursive: true });
+const dbDir = path.dirname(dbPath);
+if (!fs.existsSync(dbDir)) {
+  fs.mkdirSync(dbDir, { recursive: true });
 }
 
 const db = new Database(dbPath, { verbose: process.env.NODE_ENV === 'development' ? console.log : null });
 
-// Activer les contraintes de clees etrangères
+// Activer les contraintes de cle etrangères
 db.pragma('journal_mode = WAL');
 db.pragma('foreign_keys = ON');
 
