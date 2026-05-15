@@ -9,6 +9,9 @@ WORKDIR /app
 ENV PORT=3000
 ENV NODE_ENV=production
 
+# Installer Python et les outils de compilation (requis pour better-sqlite3)
+RUN apk add --no-cache python3 make g++
+
 # Installation des dependences backend
 COPY backend/package*.json ./backend/
 RUN cd backend && npm ci --only=production
