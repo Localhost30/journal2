@@ -1,14 +1,23 @@
 const Database = require('better-sqlite3');
 const path = require('path');
+const fs = require('fs');
 
-const dbPath = process.env.SQLITE_PATH || path.join(__dirname, '..', 'data', 'app.db');
+// Chemin absolu de la base de données
+const dataDir = path.resolve(__dirname, '..', 'data');
+const dbPath = process.env.SQLITE_PATH ? path.resolve(process.env.SQLITE_PATH) : path.join(dataDir, 'app.db');
+
+// Creer le dossier data si inexistant
+if (!fs.existsSync(dataDir)) {
+  fs.mkdirSync(dataDir, { recursive: true });
+}
+
 const db = new Database(dbPath, { verbose: process.env.NODE_ENV === 'development' ? console.log : null });
 
-// Activer les contraintes de clés étrangères
+// Activer les contraintes de clees etrangères
 db.pragma('journal_mode = WAL');
 db.pragma('foreign_keys = ON');
 
-// Créer les tables si elles n'existent pas
+// Creer les tables si elles n'existent pas
 db.exec(`
   CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -49,8 +58,6 @@ db.exec(`
 
 console.log('SQLite connecte :', dbPath);
 
-// Simuler l'API async des modèles Mongoose si besoin
-// Mais better-sqlite3 est synchrone
 const getDBStatus = () => true;
 const connectDB = async () => true;
 

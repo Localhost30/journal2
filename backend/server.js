@@ -8,6 +8,16 @@ const authRoutes = require('./routes/auth');
 const tradeRoutes = require('./routes/trades');
 const settingsRoutes = require('./routes/settings');
 
+// === Validation variables critiques ===
+const requiredEnv = ['JWT_SECRET', 'JWT_EXPIRES_IN'];
+const missingEnv = requiredEnv.filter(key => !process.env[key]);
+if (missingEnv.length > 0) {
+  console.error('ERREUR — Variables d\'environnement manquantes :', missingEnv.join(', '));
+  if (process.env.NODE_ENV === 'production') {
+    process.exit(1);
+  }
+}
+
 const app = express();
 
 // Middleware
