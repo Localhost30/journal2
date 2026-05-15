@@ -7,7 +7,7 @@ const router = express.Router();
 // GET /api/settings
 router.get('/', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user._id);
+    const user = User.findById(req.user.id);
     res.json({
       settings: {
         initialCapital: user.initialCapital,
@@ -23,10 +23,9 @@ router.get('/', auth, async (req, res) => {
 router.put('/', auth, async (req, res) => {
   try {
     const { initialCapital, currency } = req.body;
-    const user = await User.findByIdAndUpdate(
-      req.user._id,
-      { initialCapital, currency },
-      { new: true }
+    const user = User.findByIdAndUpdate(
+      req.user.id,
+      { initialCapital, currency }
     );
     res.json({
       settings: {

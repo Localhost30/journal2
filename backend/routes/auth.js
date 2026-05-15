@@ -20,17 +20,17 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ message: 'Tous les champs sont requis' });
     }
 
-    const existing = await User.findOne({ email });
+    const existing = User.findOne({ email });
     if (existing) {
       return res.status(400).json({ message: 'Cet email est déjà utilisé' });
     }
 
     const user = await User.create({ name, email, password });
-    const token = signToken(user._id);
+    const token = signToken(user.id);
 
     res.status(201).json({
       token,
-      user: { id: user._id, name: user.name, email: user.email }
+      user: { id: user.id, name: user.name, email: user.email }
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -46,7 +46,7 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ message: 'Email et mot de passe requis' });
     }
 
-    const user = await User.findOne({ email }).select('+password');
+    const user = User.findOne({ email });
     if (!user) {
       return res.status(401).json({ message: 'Email ou mot de passe incorrect' });
     }
@@ -56,11 +56,11 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Email ou mot de passe incorrect' });
     }
 
-    const token = signToken(user._id);
+    const token = signToken(user.id);
 
     res.json({
       token,
-      user: { id: user._id, name: user.name, email: user.email }
+      user: { id: user.id, name: user.name, email: user.email }
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -70,7 +70,7 @@ router.post('/login', async (req, res) => {
 // GET /api/auth/me
 router.get('/me', auth, async (req, res) => {
   res.json({
-    user: { id: req.user._id, name: req.user.name, email: req.user.email }
+    user: { id: req.user.id, name: req.user.name, email: req.user.email }
   });
 });
 
@@ -79,9 +79,8 @@ router.post('/forgot-password', async (req, res) => {
   try {
     const { email } = req.body;
 
-    const user = await User.findOne({ email });
+    const user = User.findOne({ email });
     if (!user) {
-      // Ne pas révéler que l'utilisateur n'existe pas
       return res.json({ message: 'Si cet email existe, un code vous sera envoyé' });
     }
 
@@ -108,7 +107,7 @@ router.post('/verify-otp', async (req, res) => {
   try {
     const { email, code } = req.body;
 
-    const user = await User.findOne({ email }).select('+resetOTP +resetOTPExpires');
+    const user = User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: 'Utilisateur introuvable' });
     }
@@ -125,7 +124,6 @@ router.post('/verify-otp', async (req, res) => {
       return res.status(400).json({ message: 'Code OTP incorrect' });
     }
 
-    // OTP validé — on le garde pour le reset password suivant
     res.json({ message: 'Code vérifié' });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -137,12 +135,11 @@ router.post('/reset-password', async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email }).select('+resetOTP +resetOTPExpires +password');
+    const user = User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: 'Utilisateur introuvable' });
     }
 
-    // Vérifier que l'OTP a été validé (il existe et n'a pas expiré)
     if (!user.resetOTP || !user.resetOTPExpires || user.resetOTPExpires < Date.now()) {
       return res.status(400).json({ message: 'Veuillez vérifier votre code OTP primero' });
     }
@@ -164,13 +161,13 @@ router.put('/update-profile', auth, async (req, res) => {
     const { name, email, password } = req.body;
 
     if (email && email !== req.user.email) {
-      const existing = await User.findOne({ email });
+      const existing = User.findOne({ email });
       if (existing) {
         return res.status(400).json({ message: 'Cet email est déjà utilisé' });
       }
     }
 
-    const user = await User.findById(req.user._id).select('+password');
+    const user = User.findById(req.user.id);
 
     if (name) user.name = name;
     if (email) user.email = email;
@@ -179,7 +176,7 @@ router.put('/update-profile', auth, async (req, res) => {
     await user.save();
 
     res.json({
-      user: { id: user._id, name: user.name, email: user.email }
+      user: { id: user.id, name: user.name, email: user.email }
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -190,8 +187,9 @@ router.put('/update-profile', auth, async (req, res) => {
 router.delete('/delete-account', auth, async (req, res) => {
   try {
     const Trade = require('../models/Trade');
-    await Trade.deleteOne({ userId: req.user._id });
-    await User.findByIdAndDelete(req.user._id);
+    Trade.deleteOne({ userId: req.user.id });
+    const stmt = require('../config/db').db.prepare('DELETE FROM users WHERE id = ?');
+    stmt.run(req.user.id);
     res.json({ message: 'Compte supprimé' });
   } catch (err) {
     res.status(500).json({ message: err.message });
