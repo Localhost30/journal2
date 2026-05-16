@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Trading Journal Pro - Secure Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=JetBrains+Mono:wght@100..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#723600",
+                        "on-primary-container": "#00285d",
+                        "on-tertiary": "#502400",
+                        "tertiary-fixed-dim": "#ffb786",
+                        "surface-variant": "#32353c",
+                        "primary-fixed": "#d8e2ff",
+                        "tertiary-container": "#df7412",
+                        "tertiary": "#ffb786",
+                        "secondary-fixed-dim": "#4cd7f6",
+                        "on-error": "#690005",
+                        "background": "#10131a",
+                        "error": "#ffb4ab",
+                        "inverse-on-surface": "#2e3038",
+                        "surface": "#10131a",
+                        "primary-fixed-dim": "#adc6ff",
+                        "surface-tint": "#adc6ff",
+                        "on-surface": "#e1e2ec",
+                        "on-background": "#e1e2ec",
+                        "surface-container-low": "#191b23",
+                        "surface-container-high": "#272a31",
+                        "surface-container-highest": "#32353c",
+                        "surface-container": "#1d2027",
+                        "surface-dim": "#10131a",
+                        "tertiary-fixed": "#ffdcc6",
+                        "on-secondary": "#003640",
+                        "secondary-fixed": "#acedff",
+                        "on-secondary-fixed": "#001f26",
+                        "on-secondary-fixed-variant": "#004e5c",
+                        "inverse-surface": "#e1e2ec",
+                        "surface-container-lowest": "#0b0e15",
+                        "on-tertiary-fixed": "#311400",
+                        "secondary-container": "#03b5d3",
+                        "primary-container": "#4d8eff",
+                        "outline-variant": "#424754",
+                        "inverse-primary": "#005ac2",
+                        "on-tertiary-container": "#461f00",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#004395",
+                        "on-secondary-container": "#00424e",
+                        "secondary": "#4cd7f6",
+                        "primary": "#adc6ff",
+                        "on-primary": "#002e6a",
+                        "surface-bright": "#363941",
+                        "outline": "#8c909f",
+                        "on-surface-variant": "#c2c6d6",
+                        "error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "xl": "40px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "base": "4px",
+                        "xs": "4px",
+                        "margin": "24px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "title-md": ["Geist"],
+                        "label-mono": ["JetBrains Mono"],
+                        "caption": ["Geist"],
+                        "headline-lg": ["Geist"],
+                        "display-lg": ["Geist"],
+                        "body-md": ["Geist"],
+                        "headline-lg-mobile": ["Geist"]
+                    },
+                    "fontSize": {
+                        "title-md": ["18px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "label-mono": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "caption": ["12px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(23, 32, 51, 0.8);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .light-leak-border {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .primary-gradient {
+            background: linear-gradient(135deg, #4d8eff 0%, #4cd7f6 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface-container-lowest text-on-surface font-body-md overflow-hidden h-screen flex flex-col">
+<!-- Top Visual Section (Split Screen Top) -->
+<section class="relative h-[353px] w-full flex-shrink-0 overflow-hidden">
+<div class="absolute inset-0 bg-[#0B1020]">
+<img class="w-full h-full object-cover opacity-50 mix-blend-luminosity" data-alt="A sophisticated close-up of high-frequency trading candlestick charts with glowing cyan and soft blue trend lines. The scene is set in a dark, institutional-grade environment with a shallow depth of field, emphasizing technological precision. Subtle light leaks and soft bokeh effects create a premium, calm atmosphere. The visual style is minimalist and high-performance, consistent with professional financial analysis tools." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcMh8m0DhEkFl6pHgtL_28HnBahZkpG0ilRJXnBi1P7Qw6aWtNwSOd_03wK7sLjUrJgaC-_Fd_G9UM45GNsftRPSjI9H576-B1HnrV9Zbh5ummCaW7lBJwotod5ed02QrgQHGLtvI3q0HXhSl5oftE8mv8JBGHuPNu_VlV17XCcKqd4iglEhPdNK2gIfKVkmVbBb_wpP554l7_L_QluvELhsvpyPxblN9eJE9RgrEcX8VeGIgKwUeNAMmHKAoa_nGtFaOaIvHvfHQ"/>
+<!-- Ambient Glow Overlay -->
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest to-transparent"></div>
+</div>
+<!-- Brand Identity Over Visual -->
+<div class="relative z-10 flex flex-col items-center justify-center h-full px-lg text-center">
+<span class="text-primary font-label-mono text-label-mono mb-sm tracking-[0.2em]">INSTITUTIONAL GRADE</span>
+<h1 class="text-on-surface font-headline-lg-mobile text-headline-lg-mobile tracking-widest font-extrabold uppercase">
+                TRADING JOURNAL PRO
+            </h1>
+<div class="mt-md flex space-x-base">
+<div class="h-1 w-8 rounded-full bg-primary"></div>
+<div class="h-1 w-2 rounded-full bg-secondary opacity-50"></div>
+<div class="h-1 w-2 rounded-full bg-secondary opacity-30"></div>
+</div>
+</div>
+</section>
+<!-- Bottom Form Section (Split Screen Bottom) -->
+<section class="flex-grow flex flex-col bg-surface-container-lowest relative">
+<div class="glass-panel w-full h-full rounded-t-[32px] p-xl flex flex-col shadow-[0_-20px_40px_rgba(0,0,0,0.4)]">
+<div class="mb-xl">
+<h2 class="text-on-surface font-title-md text-title-md mb-xs">Welcome Back</h2>
+<p class="text-on-surface-variant font-body-md text-body-md">Authenticate to access your secure terminal.</p>
+</div>
+<!-- Login Form -->
+<form class="space-y-lg flex-grow">
+<!-- Username/Email -->
+<div class="space-y-xs">
+<label class="text-on-surface-variant font-label-mono text-label-mono ml-xs">IDENTIFIER</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline text-[18px]">person</span>
+<input class="w-full bg-[#0B1020] border-none rounded-xl py-md pl-xl pr-md text-on-surface placeholder:text-outline/50 focus:ring-1 focus:ring-secondary transition-all outline-none" placeholder="Username or Professional Email" type="text"/>
+</div>
+</div>
+<!-- Password -->
+<div class="space-y-xs">
+<div class="flex justify-between items-center px-xs">
+<label class="text-on-surface-variant font-label-mono text-label-mono">PASSPHRASE</label>
+<a class="text-secondary font-label-mono text-label-mono hover:underline" href="#">RECOVER ACCESS</a>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline text-[18px]">lock</span>
+<input class="w-full bg-[#0B1020] border-none rounded-xl py-md pl-xl pr-md text-on-surface placeholder:text-outline/50 focus:ring-1 focus:ring-secondary transition-all outline-none" placeholder="••••••••••••" type="password"/>
+<span class="material-symbols-outlined absolute right-md top-1/2 -translate-y-1/2 text-outline/50 text-[18px]">visibility</span>
+</div>
+</div>
+<!-- Primary Action -->
+<button class="w-full primary-gradient text-on-primary font-title-md text-body-md py-md rounded-xl font-bold shadow-lg shadow-primary-container/20 active:scale-95 transition-transform" type="submit">
+                    ESTABLISH CONNECTION
+                </button>
+</form>
+<!-- Social/Institutional Auth -->
+<div class="mt-xl space-y-md">
+<div class="relative flex items-center justify-center">
+<div class="w-full border-t border-outline-variant/20"></div>
+<span class="absolute bg-surface-container/80 px-md text-on-surface-variant font-label-mono text-label-mono">OR USE SECONDARY AUTH</span>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<button class="flex items-center justify-center space-x-sm py-md rounded-xl bg-surface-container-high border border-outline-variant/10 hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">google</span>
+<span class="font-label-mono text-label-mono">GOOGLE</span>
+</button>
+<button class="flex items-center justify-center space-x-sm py-md rounded-xl bg-surface-container-high border border-outline-variant/10 hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">terminal</span>
+<span class="font-label-mono text-label-mono">API KEY</span>
+</button>
+</div>
+</div>
+<!-- Footer Signup -->
+<div class="mt-auto pt-xl text-center">
+<p class="text-on-surface-variant font-body-md text-body-md">
+                    First time at the terminal? 
+                    <a class="text-secondary font-bold ml-xs" href="#">Request Access</a>
+</p>
+</div>
+</div>
+</section>
+<!-- Minimal Overlay Security Indicator -->
+<div class="fixed top-md right-md z-50 flex items-center space-x-xs bg-surface-container-high/60 backdrop-blur-md px-sm py-xs rounded-full border border-outline-variant/20">
+<span class="material-symbols-outlined text-secondary text-[14px]" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<span class="text-[10px] font-label-mono text-secondary">SSL_ENCRYPTED</span>
+</div>
+</body></html>
