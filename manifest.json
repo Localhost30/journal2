@@ -4,8 +4,8 @@
   "description": "Journal de trading professionnel pour suivre, analyser et améliorer vos performances",
   "start_url": "index.html",
   "display": "standalone",
-  "background_color": "#0a0e17",
-  "theme_color": "#0a0e17",
+  "background_color": "#0B1020",
+  "theme_color": "#0B1020",
   "orientation": "portrait",
   "icons": [
     {

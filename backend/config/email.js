@@ -16,7 +16,7 @@ const sendOTP = async (to, code) => {
     to,
     subject: 'Trading Journal Pro — Code de vérification',
     html: `
-      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 480px; margin: 0 auto; background: #0a0e17; padding: 40px; border-radius: 16px; border: 1px solid rgba(148,163,184,0.1);">
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 480px; margin: 0 auto; background: #0B1020; padding: 40px; border-radius: 16px; border: 1px solid rgba(148,163,184,0.1);">
         <div style="text-align: center; margin-bottom: 32px;">
           <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #3b82f6, #06b6d4); border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; font-size: 24px;">📊</div>
           <h1 style="color: #f1f5f9; font-size: 22px; margin: 16px 0 4px;">Code de vérification</h1>
